@@ -75,6 +75,12 @@ git_commit(){
     local message_option=$1
     local commit_message=$2
   
+    if [ -z "$commit_message" ]
+    then
+        echo "Error. No commit message specified."
+        echo 'Usage: mygit-commit -m "<commit_message>"'
+        return
+    fi
 
     if [ "$message_option" != "-m" ]
     then
@@ -83,10 +89,9 @@ git_commit(){
         return
     fi
     
-    if [ -z "$commit_message" ]
-    then
-        echo "Error. No commit message specified."
-        echo 'Usage: mygit-commit -m "<commit_message>"'
+    if [ ! -d ".git" ]
+    then   
+        echo "Error. This directory is not a Git repo."
         return
     fi
 
@@ -95,6 +100,12 @@ git_commit(){
 }
 
 git_push(){
+    if [ ! -d ".git" ]
+    then   
+        echo "Error. This directory is not a Git repo."
+        return
+    fi
+    
     git push || echo "Error. Failed to push changes."
 }
 
